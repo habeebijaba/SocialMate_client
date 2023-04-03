@@ -1,7 +1,10 @@
-export const baseUrl = process.env.REACT_APP_BASE_URL;
+// export const baseUrl = process.env.REACT_APP_BASE_URL;
+
+export const baseUrl = "http://16.16.96.72:6001/"
 
 
 // urls
+
 export const signUpPost = "api/signup";
 export const loginPost = "api/login";
 export const submitPost = "api/add-post";
