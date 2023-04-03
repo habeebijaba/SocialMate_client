@@ -15,7 +15,7 @@ import Message from "../Message/Message";
 import io from 'socket.io-client';
 
 
-const socket = io.connect("ws://16.16.96.72");
+const socket = io.connect("ws://heavenslice.ml");
 
 
 

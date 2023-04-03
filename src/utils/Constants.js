@@ -1,6 +1,6 @@
 // export const baseUrl = process.env.REACT_APP_BASE_URL;
 
-export const baseUrl = "http://16.16.96.72/"
+export const baseUrl = "https://heavenslice.ml/"
 
 
 // urls
