@@ -33,7 +33,7 @@ const Search = () => {
     return (
         <Box>
             <InputBase
-                sx={{backgroundColor:"white"}}
+                sx={{backgroundColor:"white", paddingLeft:"5px", borderRadius:"10px"  }}
                 placeholder="Search..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}

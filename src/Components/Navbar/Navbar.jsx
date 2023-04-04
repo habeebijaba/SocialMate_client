@@ -69,7 +69,7 @@ const Navbar = () => {
         <Avatar src='https://res.cloudinary.com/dinc8ztk0/image/upload/v1678868414/icons8-connect-150_2_hofymj.png' sx={{ width: 30, height: 30,display: {xs: "block", md: "none" } }} onClick={toggleDrawer(true)} />
          <LeftToggle state={state} setState={setState} />
          <Search />
-        <Typography sx={{ display:{md:"none"}}} >Connectify</Typography>
+        <Typography sx={{ display:{md:"none"}}} >SocialMate</Typography>
         <Icons>
           <DarkModeIcon onClick={() => dispatch(setMode())} color='white' />
           <Link to="/chats" style={{ color: 'white' }}>
