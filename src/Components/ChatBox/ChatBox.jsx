@@ -15,10 +15,7 @@ import Message from "../Message/Message";
 import io from 'socket.io-client';
 
 
-const socket = io.connect("wss://heavenslice.ml");
-
-
-
+const socket = io.connect("wss://heavenslice.ml/api");
 
 const ChatBox = () => {
 
