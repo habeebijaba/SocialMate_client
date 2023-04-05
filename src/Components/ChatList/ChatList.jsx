@@ -56,13 +56,13 @@ const ChatList = () => {
           </Typography>
         </Box>
         <Box>
-          <Box>
+          {/* <Box>
             <TextField sx={{
               marginInline: "2rem",
               width: "98%",
               backgroundColor: "transparent"
             }} id="standard-basic" placeholder="Find User" variant="standard" />
-          </Box>
+          </Box> */}
           <Box >
             <List dense sx={{
               bgcolor: 'background.paper',

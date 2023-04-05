@@ -18,6 +18,8 @@ const Message = ({msg}) => {
             display: "flex",
             ...(msg?.sender === userId && {
               alignItems: "flex-end",
+              marginRight: "1rem",
+
             }),
             flexDirection: "column"
           }}>
@@ -28,11 +30,14 @@ const Message = ({msg}) => {
               marginTop: "1rem",
               ...(msg?.sender === userId && {
                 backgroundColor: "#b1c9ad",
+              borderRadius: "10px 0px 10px 10px",
+
               }),
         ...(msg?.sender !== userId && {
-                backgroundColor: "white",
-              }),
+                backgroundColor: "#e4e4e4",
               borderRadius: "0px 10px 10px 10px",
+
+              }),
               padding: "1rem"
             }}>
               <Typography color='black' variant='p' component='p'>

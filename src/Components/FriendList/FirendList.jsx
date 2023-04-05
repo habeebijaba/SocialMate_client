@@ -61,10 +61,14 @@ const FirendList = () => {
                         </Stack>
                     </List>
                 </Box>
+                <Divider sx={{ borderBottomWidth: 3,borderColor: "primary.light", }} />
+
                 <Box >
+                
+                    
                     <Stack direction="row" justifyContent="flex-start">
-                        {
-                            open &&
+                        { 
+                            open  &&
                             <Box sx={{
                                 width: "100%", margin: "1rem", maxHeight: "80vh",
                                 overflowY: "scroll",
@@ -96,6 +100,39 @@ const FirendList = () => {
                             </Box>
                         }
                     </Stack>
+
+
+
+
+                    <Stack direction="row" justifyContent="flex-start">
+                        { 
+                            open && user.followers <1 &&
+                            <Box sx={{
+                                width: "100%", margin: "1rem", maxHeight: "80vh",
+                                overflowY: "scroll",
+                                "&::-webkit-scrollbar": {
+                                    display: "none"
+                                }
+                            }}>
+                               <Typography sx={{paddingTop:"20%",paddingLeft:"30%",fontWeight:"1000"}} >You have no followers...</Typography>
+                            </Box>
+                        }
+                        {
+                            !open && user.followings <1 &&
+                            <Box sx={{
+                                width: "100%", margin: "1rem", maxHeight: "80vh",
+                                overflowY: "scroll",
+                                "&::-webkit-scrollbar": {
+                                    display: "none"
+                                }
+                            }}>
+                               <Typography sx={{paddingTop:"20%",paddingLeft:"30%",fontWeight:"1000"}} >You have no followings...</Typography>
+                            </Box>
+                        }
+                    </Stack>
+
+                    
+                    
                 </Box>
             </Card>
         </Box>
