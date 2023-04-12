@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
 import Post from '../Post/Post';
 import EditProfile from '../EditProfile/EditProfile';
+import BackgroundLetterAvatars from '../StringAvatar/StringAvatar'
 import AddPost from '../AddPost/AddPost';
 import Edit from '@mui/icons-material/Edit';
 import UploadImage from '../UploadImage/UploadImage';
@@ -15,7 +16,7 @@ import axios from '../../utils/axios';
 import { addFriend, unfollow } from '../../utils/Constants';
 import {  setSuggestedUsers, setUser } from '../../state';
 import { useNavigate } from 'react-router-dom';
-
+import { setLogout } from '../../state';
 
 
 const CoverPhoto = styled("img")({
@@ -24,15 +25,15 @@ const CoverPhoto = styled("img")({
     objectFit: "cover"
 });
 const ProfilePic = styled("img")({
-    width: "10rem",
-    height: "10rem",
+    width: "8rem",
+    height: "8rem",
     borderRadius: "50%",
     objectFit: "cover",
     position: "absolute",
     left: 0,
     right: 0,
     margin: "auto",
-    top: "10rem"
+    top: "11rem"
 });
 const EditCover = styled(Fab)(({ theme }) => ({
     position: "absolute",
@@ -72,6 +73,22 @@ const ProfileComponent = ({user}) => {
     const [posts, setPosts] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const verifyBlock=async()=>{
+        try{
+            const { data } = await axios.get("api/verify-block", {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+            if(data.blocked){
+                dispatch(setLogout())
+              }
+        }catch(err){
+            console.log(err);
+        }
+    }
     
     const getUserPost = async () => {
         try {
@@ -94,9 +111,9 @@ const ProfileComponent = ({user}) => {
                     'Authorization': `Bearer ${token}`,
                 },
             })
-            setFollowings(data.updatedUser.followings)
-            dispatch(setUser({ user: data.updatedUser }))
-            dispatch(setSuggestedUsers({ suggestUsers: data.sugesstions }))
+            setFollowings(data.updatedUser?.followings)
+            dispatch(setUser({ user: data?.updatedUser }))
+            dispatch(setSuggestedUsers({ suggestUsers: data?.sugesstions }))
         } catch (err) {
             console.log(err);
         }
@@ -110,9 +127,9 @@ const ProfileComponent = ({user}) => {
                 },
             })
 
-            setFollowings(data.updatedUser.followings)
-            dispatch(setUser({ user: data.updatedUser }))
-            dispatch(setSuggestedUsers({ suggestUsers: data.sugesstions }))
+            setFollowings(data.updatedUser?.followings)
+            dispatch(setUser({ user: data?.updatedUser }))
+            dispatch(setSuggestedUsers({ suggestUsers: data?.sugesstions }))
         } catch (err) {
             console.log(err);
         }
@@ -126,8 +143,8 @@ const ProfileComponent = ({user}) => {
                 },
             })
             dispatch(setUser({user:data}))
-            setFollowers(data.followers)
-            setFollowings(data.followings);
+            setFollowers(data?.followers)
+            setFollowings(data?.followings);
         } catch (err) {
 
         }
@@ -146,7 +163,9 @@ const ProfileComponent = ({user}) => {
     }
 
     useEffect(() => {
+        verifyBlock()
         getUser()
+
     },[])
 
     useEffect(() => {
@@ -169,7 +188,11 @@ const ProfileComponent = ({user}) => {
                       <Edit />
                   </EditCover>
               } */}
+              {user.profilePic ?
               <ProfilePic src={user?.profilePic} alt='profile' />
+                :
+                <BackgroundLetterAvatars name={user?.username} />
+              }
               <Box sx={{
                   position: "relative",
               }} >

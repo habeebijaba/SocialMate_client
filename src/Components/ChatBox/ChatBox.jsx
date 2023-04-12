@@ -13,9 +13,12 @@ import {  useSelector } from "react-redux";
 import axios from '../../utils/axios';
 import Message from "../Message/Message";
 import io from 'socket.io-client';
+import { Typography } from "@mui/material";
 
 
 const socket = io.connect("wss://heavenslice.ml");
+
+// const socket=io.connect("ws://localhost:6001")
 
 const ChatBox = () => {
 
@@ -202,11 +205,13 @@ const ChatBox = () => {
                             inputProps={{ 'aria-label': 'Type Message' }}
                         />
                     </Box>
+                    { newMessage.length >= 1 ?
                     <SendRoundedIcon
                         onClick={handleSubmit}
                         sx={{
                         backgroundColor: "#bc80d4",
                         padding: "1rem",
+                        marginBottom:"1rem",
                         paddingLeft: "1rem",
                         borderRadius: "100%",
                         color: "white",
@@ -218,6 +223,8 @@ const ChatBox = () => {
                         }
                             
                     }} />
+                    :''
+                }
                 </Box>
                 <UploadImage open={openImageUpload} setOpen={setImageUpload} />
 

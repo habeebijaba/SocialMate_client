@@ -5,6 +5,8 @@ import { addFriend, unfollow } from '../../utils/Constants';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setSuggestedUsers, setUser } from '../../state';
+import { setLogout } from '../../state';
+
 
 const Friend = ({userId, value }) => {
     
@@ -23,10 +25,17 @@ const Friend = ({userId, value }) => {
                     'Authorization': `Bearer ${token}`,
                 },
             })
+
+            if(data.blocked){
+                dispatch(setLogout())
+              }else{
+
             
             dispatch(setUser({ user: data.updatedUser }))
             dispatch(setSuggestedUsers({ suggestUsers: data.sugesstions }))
             setLoading(false)
+              }
+              
         } catch (err) {
             console.log(err);
         }
@@ -40,10 +49,14 @@ const Friend = ({userId, value }) => {
                     'Authorization': `Bearer ${token}`,
                 },
             })
+            if(data.blocked){
+                dispatch(setLogout())
+              }else{
 
             dispatch(setUser({ user: data.updatedUser }))
             dispatch(setSuggestedUsers({ suggestUsers: data.sugesstions }))
             setLoading(false)
+              }
         } catch (err) {
             console.log(err);
         }
@@ -56,6 +69,7 @@ const Friend = ({userId, value }) => {
                     'Authorization': `Bearer ${token}`,
                 },
             })
+            
             
             setFriend(data);
         } catch (err) {

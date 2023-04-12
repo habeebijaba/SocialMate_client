@@ -12,16 +12,46 @@ import EmailIcon from '@mui/icons-material/Email';
 import { setLogout } from '../../state';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from '../../utils/axios';
+import Swal from "sweetalert2"
+
+
 
 const Leftbar = (active) => {
-  console.log(active,"active is here");
-  console.log(active.profile);
-
+const token = useSelector(state => state.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
 
+
+  const verifyBlock=async()=>{
+    try{
+        const { data } = await axios.get("api/verify-block", {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+        if(data.blocked){
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'You are temporarly blocked!',
+            footer: '<a href="">Why do I have this issue?</a>'
+          }).then(()=>{
+            dispatch(setLogout())
+
+          })
+          }
+    }catch(err){
+        console.log(err);
+    }
+}
+
+useEffect(()=>{
+  verifyBlock()
+})
 
 
   return (

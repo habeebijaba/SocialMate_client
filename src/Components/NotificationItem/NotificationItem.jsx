@@ -17,6 +17,7 @@ const NotificationItem = ({ notification }) => {
     const dispatch = useDispatch();
 
     const handleFollow = async (friendId) => {
+        console.log("follow frommm norifiavayhrkgn");
         try {
             if (buttonState) {
                 return
@@ -74,11 +75,11 @@ const NotificationItem = ({ notification }) => {
                   notification?.type !== "like" | "Comment" && !followings?.includes(notification?.friend._id)  ? 
                   <LoadingButton
                       size="small"
-                      fullWidthonClick={() => handleFollow(notification?.friend._id)}
+                      onClick={() => handleFollow(notification?.friend._id)}
                       loading={loading}
                       variant="contained"
                   >
-                          <span>{buttonState ? 'Following' : "Fowllow back" }</span>
+                          <span>{buttonState ? 'Following' : "Follow back" }</span>
                       </LoadingButton> : ''
               }
           </Box>

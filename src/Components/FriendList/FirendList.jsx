@@ -12,14 +12,40 @@ import {
     Badge,
     
 } from '@mui/material'
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react'
+import { useSelector,useDispatch } from 'react-redux';
 import Friend from '../Friend/Friend'
+import axios from '../../utils/axios';
+import { setLogout } from '../../state';
 
 
 
 
 const FirendList = () => {
+const dispatch=useDispatch()
+const token = useSelector(state => state.token);
+
+
+
+    const verifyBlock=async()=>{
+        try{
+            const { data } = await axios.get("api/verify-block", {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+            if(data.blocked){
+                dispatch(setLogout())
+              }
+        }catch(err){
+            console.log(err);
+        }
+    }
+
+    useEffect(()=>{
+        verifyBlock()
+    })
 
     const user = useSelector(state => state.user);
 
@@ -106,7 +132,7 @@ const FirendList = () => {
 
                     <Stack direction="row" justifyContent="flex-start">
                         { 
-                            open && user.followers <1 &&
+                            open && user?.followers <1 &&
                             <Box sx={{
                                 width: "100%", margin: "1rem", maxHeight: "80vh",
                                 overflowY: "scroll",
@@ -118,7 +144,7 @@ const FirendList = () => {
                             </Box>
                         }
                         {
-                            !open && user.followings <1 &&
+                            !open && user?.followings <1 &&
                             <Box sx={{
                                 width: "100%", margin: "1rem", maxHeight: "80vh",
                                 overflowY: "scroll",

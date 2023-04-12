@@ -35,7 +35,7 @@ const LeftToggle = ({ state, setState }) => {
                 <ListItem>
                     <ListItemButton onClick={() => navigate(`/profile/${userId}`)}>
                         <ListItemIcon>
-                            <Avatar src={user.profilePic} sx={{ width: 30, height: 30 }} />
+                            <Avatar src={user?.profilePic} sx={{ width: 30, height: 30 }} />
                         </ListItemIcon>
                         <ListItemText primary={user?.username} />
                     </ListItemButton>

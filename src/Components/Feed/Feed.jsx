@@ -7,15 +7,15 @@ import { setPosts } from '../../state';
 import axios from '../../utils/axios';
 import { getPost } from '../../utils/Constants';
 import CircularProgress from '@mui/material/CircularProgress';
-
+import { setLogout } from '../../state';
+import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 
 
 const Feed = () => {
   const [skip, setSkip] = useState(0)
-  // const [posts, setPosts] = useState([])//fun comment for lazy loading
+  const userId = useSelector(state => state.user?._id);
   const [isEnd, setIsEnd] = useState(false)
   const [loading, setLoading] = useState(false)
-
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
@@ -25,41 +25,44 @@ const Feed = () => {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${token}`,
-
       },
       params: {
         skip: skip,
-      }
+        userId: userId
 
+      }
     })
+
     const postData = response.data;
-    dispatch(setPosts({ posts:  postData }));
-    console.log(postData.length);
-    if (postData?.length === 0) {
+    const combinedPosts = [...posts, ...postData];
+    dispatch(setPosts({ posts: combinedPosts }));
+    setSkip(skip + 10);
+    if (postData?.length < 10) {
+      setLoading(false)
       setIsEnd(true)
       return
     }
-    setLoading(true)
-    setPosts([...posts, ...postData])
-    setLoading(false)
   }
 
   useEffect(() => {
-    getPosts()
+    if (posts.length === 0) {
+      getPosts()
+    }
   }, [])
 
-//for lazy loading...
 
-  // const handleScroll = () => {
-  //   if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
-  //     setSkip(skip + 10)
-  //   }
-  // }
+  //for lazy loading...
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll)
-  //   return () => window.removeEventListener("scroll", handleScroll)
-  // }, [])
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
+      setLoading(true)
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   return (
     <Box flex={4}>
@@ -86,9 +89,14 @@ const Feed = () => {
           />
         ))
       }
-      {loading &&
+      {loading && !isEnd &&
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "8vh" }}>
-          <CircularProgress />
+          <LoadingButton
+            size="small"
+            onClick={() => getPosts()}
+            // loading={loading}
+            variant="contained"
+          >show more</LoadingButton>
         </div>}
       {isEnd && <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "8vh" }}>
         <h3>You Almost Reached !!!</h3>

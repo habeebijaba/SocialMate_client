@@ -159,6 +159,7 @@ const AddPost = () => {
                     <Stack direction="row" gap={1} mt={2} mb={3}>
                         <ImageIcon onClick={e => setImgae(!image)} color="secondary" />
                     </Stack>
+                    {postContent.length>=1 ?
                     <LoadingButton
                         size="small"
                         fullWidth
@@ -166,8 +167,9 @@ const AddPost = () => {
                         loading={loading}
                         variant="contained"
                     >
+                        
                         <span>Post</span>
-                    </LoadingButton>
+                    </LoadingButton> : "" }
                 </Box>
             </StyledModal>
         </>

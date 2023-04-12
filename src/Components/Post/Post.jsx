@@ -23,6 +23,8 @@ import { Box } from '@mui/system';
 import TimeAgo from 'timeago.js';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
+import './post.css'
+
 
 
 const Post = ({
@@ -82,7 +84,7 @@ const Post = ({
             }} >
                 <CardHeader
                     avatar={
-                        <Avatar onClick={() => navigate(`/profile/${author?._id}`)} sx={{ bgcolor: "red" }} src={author.profilePic} aria-label="author"/>
+                        <Avatar onClick={() => navigate(`/profile/${author?._id}`)} sx={{ bgcolor: "red" ,cursor:"pointer"}} src={author.profilePic} aria-label="author"/>
                     }
                     action={
                         <IconButton sx={{
@@ -100,17 +102,18 @@ const Post = ({
                     title= {author.username}
                     subheader={timeago.format(createdAt) }
                 />
+                 <CardContent>
+                    <Typography variant="body2" color="text.secondary">
+                        {content}
+                    </Typography>
+                </CardContent>
                 <CardMedia
                     component="img"
                     src={image}
                     alt="Paella dish"
                     sx={{ objectFit:"contain", height:"15rem"}}
                 />
-                <CardContent>
-                    <Typography variant="body2" color="text.secondary">
-                        {content}
-                    </Typography>
-                </CardContent>
+               
                 <CardActions disableSpacing>
                     <IconButton aria-label="add to favorites" onClick={patchLike}>
                         <Checkbox defaultChecked={isLiked} icon={<FavoriteBorder />} checkedIcon={<Favorite sx={{ color: "red" }} />} />
@@ -121,8 +124,11 @@ const Post = ({
                     <IconButton aria-label="comment" onClick={() => setCommentOpen(!commentOpen)}>
                         <Article />
                     </IconButton>
+                    <Typography variant="body2" color="text.secondary">
+                        {comments.length} comments
+                    </Typography>
                     <IconButton aria-label="share">
-                        <ShareIcon />
+                        {/* <ShareIcon /> */}
                     </IconButton>
                 </CardActions>
                 {commentOpen &&
@@ -132,7 +138,9 @@ const Post = ({
                             <TextField id="outlined-basic" onChange={(e) => setComment(e.target.value)} value={comment} placeholder="What's on your mind ?" variant="outlined" sx={{ marginLeft: "1rem", width: "90%", height: "1rem" }} />
                         </Box>
                         <Box sx={{ marginTop: "2rem", marginLeft: "85%", marginBottom: "1rem" }}>
-                            <Button variant='contained' size='small' onClick={handleCommentSubmit} >submit</Button>
+                            { comment.length >= 1 ?
+                            <Button sx={{borderRadius:"40px"}} variant='contained' size='small' onClick={handleCommentSubmit} >comment</Button>
+                            :''}
                         </Box>
                         <Divider />
                         <Box sx={{
@@ -143,6 +151,8 @@ const Post = ({
                                 display: "none"
                             }
                         }}>
+
+
                         {
                             comments?.map((comment, index) => (
                                 <Comment
