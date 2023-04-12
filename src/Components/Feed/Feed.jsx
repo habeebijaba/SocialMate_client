@@ -34,9 +34,10 @@ const Feed = () => {
     })
 
     const postData = response.data;
-    const combinedPosts = [...posts, ...postData];
-    dispatch(setPosts({ posts: combinedPosts }));
-    setSkip(skip + 10);
+    // const combinedPosts = [...posts, ...postData];
+
+    dispatch(setPosts({ posts: postData }));
+    // setSkip(skip + 10);
     if (postData?.length < 10) {
       setLoading(false)
       setIsEnd(true)
@@ -45,24 +46,22 @@ const Feed = () => {
   }
 
   useEffect(() => {
-    if (posts.length === 0) {
       getPosts()
-    }
   }, [])
 
 
   //for lazy loading...
 
-  const handleScroll = () => {
-    if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
-      setLoading(true)
-    }
-  }
+  // const handleScroll = () => {
+  //   if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
+  //     setLoading(true)
+  //   }
+  // }
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll)
+  //   return () => window.removeEventListener("scroll", handleScroll)
+  // }, [])
 
   return (
     <Box flex={4}>
