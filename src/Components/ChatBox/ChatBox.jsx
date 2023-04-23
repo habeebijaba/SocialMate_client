@@ -19,7 +19,7 @@ import { Typography } from "@mui/material";
 const socket = io.connect("wss://heavenslice.ml");
 
 // const socket=io.connect("ws://localhost:6001")
-
+ 
 const ChatBox = () => {
 
     const [openImageUpload, setImageUpload] = useState(false);
@@ -32,7 +32,7 @@ const ChatBox = () => {
     const userId = useSelector((state) => state.user._id);
     const token = useSelector((state) => state.token);
     const scrollRef = useRef();
- 
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -90,12 +90,15 @@ const ChatBox = () => {
     useEffect(() => {
         const getMessags = async () => {
             try {
-                const res = await axios.get(`api/message/${id}`, {
+                const res = await axios.get(`api/message/${id}?userId=${userId}`,
+                
+                {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ${token}`,
                     },
-                });
+                },
+         );
                 setMessages(res.data)
             } catch (error) {
                 console.log(error);
@@ -205,7 +208,7 @@ const ChatBox = () => {
                             inputProps={{ 'aria-label': 'Type Message' }}
                         />
                     </Box>
-                    { newMessage.length >= 1 ?
+                    { newMessage.trim().length >= 1 ?
                     <SendRoundedIcon
                         onClick={handleSubmit}
                         sx={{

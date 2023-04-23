@@ -4,22 +4,42 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import List from '@mui/material/List';
 import { useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from '../../utils/axios';
 import ChatItem from "../ChatItem/ChatItem";
+import { Divider } from "@mui/material";
+import io from 'socket.io-client';
 
+const socket = io.connect("wss://heavenslice.ml");
+
+// const socket=io.connect("ws://localhost:6001")
 
 const ChatList = () => {
 
-
   const [converstations, setConverstations] = useState([]);
+  const [message, setMessage] = useState([]);
+
   const userId = useSelector((state) => state.user._id);
   const token = useSelector((state) => state.token);
+  const scrollRef = useRef()
 
-  
- 
-  
-  
+
+  useEffect(() => {
+    socket.emit('addUser', userId)
+    socket.on('getUsers', users => {
+
+    })
+}, [userId])
+useEffect(() => {
+
+  socket.on('getMessage', (data) => {
+    setMessage({
+          sender: data.senderId,
+          text: data.text,
+          createdAt: new Date()
+      })
+  })
+}, [])
 
   useEffect(() => {
     const getConverstations = async () => {
@@ -30,17 +50,14 @@ const ChatList = () => {
             'Authorization': `Bearer ${token}`,
           },
         });
-
         setConverstations(res.data)
       } catch (error) {
         console.log(error);
       }
     }
     getConverstations()
-  }, []);
+  }, [message]);
 
-
-  
   return (
     <Box flex={4}>
       <Card sx={{
@@ -54,6 +71,7 @@ const ChatList = () => {
           <Typography variant="h6" component="h1" >
             Chats
           </Typography>
+          <Divider/>
         </Box>
         <Box>
           {/* <Box>

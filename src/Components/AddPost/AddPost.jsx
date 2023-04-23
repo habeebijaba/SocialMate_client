@@ -17,6 +17,7 @@ import axios from '../../utils/axios';
 import { submitPost } from '../../utils/Constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { setPosts } from "../../state/index";
+import swal from 'sweetalert2'
 
 
 const StyledModal = styled(Modal)({
@@ -45,6 +46,7 @@ const AddPost = () => {
 
 
     const handleSubmit = async () => {
+        try{
         setLoading(true);
         const formData = new FormData();
         formData.append('content', postContent);
@@ -63,6 +65,15 @@ const AddPost = () => {
         dispatch(setPosts({ posts: [post,...posts] }));
         setLoading(false);
         setOpen(false);
+    }catch(err){
+        setLoading(false)
+        setOpen(false)
+        swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please select a valid image !',
+          })
+    }
     };
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -71,10 +82,17 @@ const AddPost = () => {
         },
         multiple:false,
         onDrop: acceptedFiles => {
-            setImgae(false)
-            setFiles(acceptedFiles.map(file => Object.assign(file, {
-                preview: URL.createObjectURL(file)
-            })));
+    //    if (acceptedFiles.length<1) {
+    //     setLoading(false)
+    //     setOpen(false)
+    //   swal.fire('Only image files are supported');
+    // } else {
+                setImgae(false)
+                setFiles(acceptedFiles.map(file => Object.assign(file, {
+                    preview: URL.createObjectURL(file)
+                })));
+            // }
+            
         }
     });
 
@@ -159,7 +177,8 @@ const AddPost = () => {
                     <Stack direction="row" gap={1} mt={2} mb={3}>
                         <ImageIcon onClick={e => setImgae(!image)} color="secondary" />
                     </Stack>
-                    {postContent.length>=1 ?
+                    
+                    {/* { postContent.trim().length>=1 || image || files[0] ? */}
                     <LoadingButton
                         size="small"
                         fullWidth
@@ -169,7 +188,8 @@ const AddPost = () => {
                     >
                         
                         <span>Post</span>
-                    </LoadingButton> : "" }
+                    </LoadingButton> 
+                     {/* : ''} */}
                 </Box>
             </StyledModal>
         </>

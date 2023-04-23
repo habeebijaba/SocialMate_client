@@ -10,24 +10,23 @@ import Notification from '@mui/icons-material/Notifications';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LeftToggle from '../LeftToggle/LeftToggle';
-import { setMode } from '../../state';
+import { setMode, setMessageCount } from '../../state';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { setLogout } from '../../state';
 import Search from '../Search/Search';
+import axios from '../../utils/axios';
 
+import io from 'socket.io-client';
 
-
-
+const socket=io.connect("ws://localhost:6001")
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
   justifyContent: "space-between",
 });
-
-
 
 const Icons = styled(Box)(({ theme }) => ({
   display: "none",
@@ -47,18 +46,56 @@ const MobileIcons = styled(Box)(({ theme }) => ({
   }
 }));
 
-
-
 const Navbar = () => {
+
   const [open, setOpen] = useState(false);
   const [state, setState] = useState(false);
+  const [notification, setNotification] = useState(null)
+
+  // const [messageCount,setMessageCount]=useState(0)
+
   const toggleDrawer = (open) => () => {
     setState(open);
   };
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const liveNotifications = useSelector((state) => state.notifications);
+  const messageCount = useSelector((state) => state.messageCount)
+
   
-  
+  //   useEffect(() => {
+
+  //     socket.on('getNotification', (data) => {
+  //         setNotification({
+  //             senderId: data.senderId,
+  //             senderName:data.senderName,
+  //             text: data.text,
+  //             createdAt: new Date()
+  //         })
+  //     })
+  // }, [socket])
+
+  // useEffect(() => {
+  //     socket.emit('addUsers', user._id)
+  //     socket.on('getUserss', users => {
+
+  //     })
+  // }, [socket])
+
+ 
+
+
+  useEffect(() => {
+    const converstationCount = async () => {
+      try {
+        const { data } = await axios.get(`api/converstation/converstationCount/${user._id}`)
+        dispatch(setMessageCount({ messageCount: data }))
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    converstationCount()
+  }, [messageCount])
 
   return (
     <AppBar sx={{ backgroundColor: "rgba(39, 11, 96, )" }} position='sticky' >
@@ -66,38 +103,50 @@ const Navbar = () => {
         <Typography variant='h6' sx={{ display: { xs: "none", md: "block" } }}>
           SocialMate
         </Typography>
-        <Avatar src='https://res.cloudinary.com/dinc8ztk0/image/upload/v1678868414/icons8-connect-150_2_hofymj.png' sx={{ width: 30, height: 30,display: {xs: "block", md: "none" } }} onClick={toggleDrawer(true)} />
-         <LeftToggle state={state} setState={setState} />
-         <Search />
-        <Typography sx={{ display:{md:"none"}}} >SocialMate</Typography>
+        <Avatar src='https://res.cloudinary.com/dinc8ztk0/image/upload/v1678868414/icons8-connect-150_2_hofymj.png' sx={{ width: 30, height: 30, display: { xs: "block", md: "none" } }} onClick={toggleDrawer(true)} />
+        <LeftToggle state={state} setState={setState} />
+        <Search />
+        <Typography sx={{ display: { md: "none" } }} >SocialMate</Typography>
         <Icons>
           <DarkModeIcon onClick={() => dispatch(setMode())} color='white' />
           <Link to="/chats" style={{ color: 'white' }}>
-          <Badge badgeContent={4} color="error">
-            <Mail color="white" />
-          </Badge>
-          </Link>
-          <Link to="/notifications" style={{ color: 'white' }}>
-          <Badge badgeContent={4} color="error">
-            <Notification color="white" />
-          </Badge>
-          </Link>
-          <Avatar   sx={{ width: 30, height: 30 }} src={user?.profilePic} onClick={e => setOpen(true)} />
-        </Icons>
-        <MobileIcons>
-          <DarkModeIcon onClick={() => dispatch(setMode())} color='white'  />
-          <Link to="/chats" style={{ color: 'white' }}>
-            <Badge badgeContent={4} color="error">
+            <Badge badgeContent={messageCount} color="error">
               <Mail color="white" />
             </Badge>
           </Link>
-          <Link to="/notificatios" style={{ color: 'white' }}>
+          <Link to="/liveNotifications" style={{ color: 'white' }}>
+            <Badge badgeContent={liveNotifications.length} color="error">
+              <Notification color="white" />
+
+            </Badge>
+          </Link>
+          {/* <Link to="/notifications" style={{ color: 'white' }}>
             <Badge badgeContent={4} color="error">
               <Notification color="white" />
             </Badge>
-          </Link>
+          </Link> */}
           <Avatar sx={{ width: 30, height: 30 }} src={user?.profilePic} onClick={e => setOpen(true)} />
-      </MobileIcons>
+        </Icons>
+        <MobileIcons>
+          <DarkModeIcon onClick={() => dispatch(setMode())} color='white' />
+          <Link to="/chats" style={{ color: 'white' }}>
+            <Badge badgeContent={messageCount} color="error">
+              <Mail color="white" />
+            </Badge>
+          </Link>
+          <Link to="/liveNotifications" style={{ color: 'white' }}>
+            <Badge badgeContent={liveNotifications.length} color="error">
+              <Notification color="white" />
+
+            </Badge>
+          </Link>
+          {/* <Link to="/notificatios" style={{ color: 'white' }}>
+            <Badge badgeContent={4} color="error">
+              <Notification color="white" />
+            </Badge>
+          </Link> */}
+          <Avatar sx={{ width: 30, height: 30 }} src={user?.profilePic} onClick={e => setOpen(true)} />
+        </MobileIcons>
       </StyledToolbar>
       <Menu
         id="demo-positioned-menu"

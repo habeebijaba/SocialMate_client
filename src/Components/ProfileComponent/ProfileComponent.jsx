@@ -17,6 +17,8 @@ import { addFriend, unfollow } from '../../utils/Constants';
 import {  setSuggestedUsers, setUser } from '../../state';
 import { useNavigate } from 'react-router-dom';
 import { setLogout } from '../../state';
+import { setUserPost,setUserPosts } from '../../state/index';
+
 
 
 const CoverPhoto = styled("img")({
@@ -74,6 +76,8 @@ const ProfileComponent = ({user}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+  const userPosts = useSelector((state) => state.userPosts);
+
     const verifyBlock=async()=>{
         try{
             const { data } = await axios.get("api/verify-block", {
@@ -99,6 +103,9 @@ const ProfileComponent = ({user}) => {
                 },
             })
             setPosts(data);
+           dispatch(setUserPosts({ userPosts: data }));
+
+            console.log(userPosts,"userposts redux");
         } catch (err) {
             console.log(err);
         }
@@ -247,7 +254,7 @@ const ProfileComponent = ({user}) => {
               </UserInfoBox>
           </Box>
           {
-              posts.map(({
+              userPosts?.map(({
                   _id,
                   content,
                   author,

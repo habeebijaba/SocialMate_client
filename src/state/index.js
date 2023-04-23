@@ -5,9 +5,12 @@ const initialState = {
     user: null,
     token: null,
     posts: [],
+    userPosts:[],
     userStories: [],
     messages: [],
     suggestUsers: [],
+    notifications:[],
+    messageCount:0,
 };
 
 export const authSlice = createSlice({
@@ -35,6 +38,21 @@ export const authSlice = createSlice({
             });
             state.posts = updatedPosts;
         },
+
+
+        setUserPosts: (state, action) => {
+            state.userPosts = action.payload.userPosts;
+        },
+        setUserPost: (state, action) => {
+            const updatedPosts = state.userPosts.map((post) => {
+                if (post._id === action.payload.post._id) return action.payload.post;
+                return post;
+            });
+            state.userPosts = updatedPosts;
+        },
+
+
+
         setUser: (state, action) => {
             state.user = action.payload.user;
         },
@@ -46,10 +64,16 @@ export const authSlice = createSlice({
         },
         setSuggestedUsers: (state, action) => {
             state.suggestUsers = action.payload.suggestUsers;
+        },
+        setNotifications:(state,action)=>{
+            state.notifications=action.payload.notifications
+        },
+        setMessageCount:(state,action)=>{
+            state.messageCount=action.payload.messageCount
         }
     },
 });
 
 export const { setMode, setLogin, setLogout, setPosts, setSuggestedUsers,
-                setPost, setUser, setMessages, setUserStories } = authSlice.actions;
+                setPost, setUser, setMessages, setUserStories,setUserPost,setUserPosts,setNotifications,setMessageCount } = authSlice.actions;
 export default authSlice.reducer;

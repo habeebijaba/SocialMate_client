@@ -11,6 +11,7 @@ import Chat from '../../Pages/Chat/Chat';
 import Notification from '../../Pages/Notification/Notification';
 import VerifyEmail from '../../Pages/VerifyEmail/VerifyEmail';
 import Friends from '../../Pages/Friends/Friends';
+import Livenotification from '../../Pages/LiveNotification/LiveNotification';
 
 
 const User = () => {
@@ -64,6 +65,7 @@ const User = () => {
                 <Route path="/chat/:id/:friendId" element={<Chat />} />
                 <Route path="/notifications" element={<Notification />} />
                 <Route path="/friends" element={<Friends />} />
+                <Route path='/liveNotifications' element={<Livenotification/>}/>
             </Route>
             <Route
                 path="/login"
