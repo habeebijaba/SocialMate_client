@@ -10,9 +10,9 @@ import ChatItem from "../ChatItem/ChatItem";
 import { Divider } from "@mui/material";
 import io from 'socket.io-client';
 
-const socket = io.connect("wss://heavenslice.ml");
+// const socket = io.connect("wss://heavenslice.ml");
 
-// const socket=io.connect("ws://localhost:6001")
+const socket=io.connect("ws://localhost:6001")
 
 const ChatList = () => {
 
