@@ -21,7 +21,9 @@ import axios from '../../utils/axios';
 
 import io from 'socket.io-client';
 
-const socket=io.connect("ws://localhost:6001")
+const socket = io.connect("wss://heavenslice.ml");
+
+// const socket=io.connect("ws://localhost:6001")
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -63,30 +65,32 @@ const Navbar = () => {
   const messageCount = useSelector((state) => state.messageCount)
 
   
-  //   useEffect(() => {
+    useEffect(() => {
 
-  //     socket.on('getNotification', (data) => {
-  //         setNotification({
-  //             senderId: data.senderId,
-  //             senderName:data.senderName,
-  //             text: data.text,
-  //             createdAt: new Date()
-  //         })
-  //     })
-  // }, [socket])
+      socket.on('getNotification', (data) => {
+          setNotification({
+              senderId: data.senderId,
+              senderName:data.senderName,
+              text: data.text,
+              createdAt: new Date()
+          })
+      })
+  }, [socket])
 
-  // useEffect(() => {
-  //     socket.emit('addUsers', user._id)
-  //     socket.on('getUserss', users => {
+  useEffect(() => {
+      socket.emit('addUsers', user._id)
+      socket.on('getUserss', users => {
 
-  //     })
-  // }, [socket])
+      })
+  }, [socket])
 
  
 
 
   useEffect(() => {
     const converstationCount = async () => {
+      console.log("callingg");
+      
       try {
         const { data } = await axios.get(`api/converstation/converstationCount/${user._id}`)
         dispatch(setMessageCount({ messageCount: data }))

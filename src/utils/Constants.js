@@ -1,7 +1,7 @@
 // export const baseUrl = process.env.REACT_APP_BASE_URL;
 
-export const baseUrl = "https://heavenslice.ml/"
-// export const baseUrl = "http://localhost:6001/"
+// export const baseUrl = "https://heavenslice.ml/"
+export const baseUrl = "http://localhost:6001/"
 
 
 
