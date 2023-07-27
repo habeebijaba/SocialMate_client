@@ -21,7 +21,10 @@ import axios from '../../utils/axios';
 
 import io from 'socket.io-client';
 
-const socket = io.connect("wss://heavenslice.ml");
+
+const socket = io.connect("ws://13.49.49.249");
+
+// const socket = io.connect("wss://heavenslice.ml");
 
 // const socket=io.connect("ws://localhost:6001")
 
