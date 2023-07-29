@@ -188,16 +188,16 @@ const Login = () => {
                             <GoogleLogin
                                 onSuccess={response => {
                                     handleGoogleLogin(response)
-                                    // fetch("http://localhost:6001/api/google-login", {
-                                    //     method: "POST",
-                                    //     headers: {
-                                    //         "Content-Type": "application/json"
-                                    //     },
-                                    //     body: JSON.stringify({ token: response.credential })
-                                    // })
-                                    //     .then(response => response.json())
-                                    //     .then(data => console.log(data))
-                                    //     .catch(error => console.error(error));
+                                    fetch("https://sfrwatch.cf/api/google-login", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify({ token: response.credential })
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => console.log(data))
+                                        .catch(error => console.error(error));
                                 }}
                                 onError={() => {
                                     console.log('Login Failed');
