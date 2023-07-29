@@ -15,9 +15,8 @@ import Message from "../Message/Message";
 import io from 'socket.io-client';
 import { Typography } from "@mui/material";
 
-const socket = io.connect("ws://13.49.49.249");
 
-// const socket = io.connect("wss://heavenslice.ml");
+const socket = io.connect("wss://sfrwatch.cf");
 
 // const socket=io.connect("ws://localhost:6001")
  

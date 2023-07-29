@@ -10,9 +10,8 @@ import ChatItem from "../ChatItem/ChatItem";
 import { Divider } from "@mui/material";
 import io from "socket.io-client";
 
-const socket = io.connect("ws://13.49.49.249");
 
-// const socket = io.connect("wss://heavenslice.ml");
+const socket = io.connect("wss://sfrwatch.cf");
 
 // const socket=io.connect("ws://localhost:6001")
 
